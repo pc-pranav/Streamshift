@@ -4,54 +4,54 @@ import { useState, useEffect, useRef, useCallback } from "react";
 const P = {
   spotify: {
     name: "Spotify", color: "#1DB954",
-    authPath: "/api/auth/spotify/login",
-    refreshPath: "/api/auth/spotify/refresh",
-    authParam: "spotify_auth",
-    authType: "oauth",
+    authPath:    "/api/auth/oauth?platform=spotify&action=login",
+    refreshPath: "/api/auth/oauth?platform=spotify&action=refresh",
+    authParam:   "spotify_auth",
+    authType:    "oauth",
     icon: <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>,
   },
   youtube_music: {
     name: "YouTube Music", color: "#FF0000",
-    authPath: "/api/auth/youtube/login",
-    refreshPath: "/api/auth/youtube/refresh",
-    authParam: "youtube_auth",
-    authType: "oauth",
+    authPath:    "/api/auth/oauth?platform=youtube_music&action=login",
+    refreshPath: "/api/auth/oauth?platform=youtube_music&action=refresh",
+    authParam:   "youtube_auth",
+    authType:    "oauth",
     note: "Signs in via Google",
     icon: <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>,
   },
   apple_music: {
     name: "Apple Music", color: "#FC3C44",
-    authPath: null,
+    authPath:    null,
     refreshPath: null,
-    authParam: "apple_auth",
-    authType: "oauth",
+    authParam:   "apple_auth",
+    authType:    "oauth",
     note: "Requires Apple Developer account",
     icon: <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>,
   },
   amazon_music: {
     name: "Amazon Music", color: "#00A8E1",
-    authPath: "/api/auth/amazon/login",
-    refreshPath: "/api/auth/amazon/refresh",
-    authParam: "amazon_auth",
-    authType: "oauth",
+    authPath:    "/api/auth/oauth?platform=amazon_music&action=login",
+    refreshPath: "/api/auth/oauth?platform=amazon_music&action=refresh",
+    authParam:   "amazon_auth",
+    authType:    "oauth",
     note: "Works for amazon.in too",
     icon: <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M.045 18.02c.072-.116.187-.124.348-.022 3.636 2.11 7.594 3.166 11.87 3.166 2.852 0 5.668-.533 8.447-1.595l.315-.14c.138-.06.234-.1.293-.13.226-.088.39-.046.525.13.12.174.09.336-.12.48-.256.19-.6.41-1.006.654-1.244.743-2.64 1.316-4.185 1.726a17.74 17.74 0 0 1-5.05.736 19.36 19.36 0 0 1-5.78-.87 21.24 21.24 0 0 1-5.04-2.405c-.198-.133-.23-.28-.12-.483zm6.565-6.218c0-1.005.247-1.863.743-2.575.495-.71 1.17-1.25 2.025-1.615.013-.01.03-.015.045-.02a8.65 8.65 0 0 1 2.974-.578l.312-.013v-.311c0-.912-.048-1.497-.15-1.758-.15-.386-.455-.58-.92-.58-.435 0-.74.207-.914.62-.138.33-.218.795-.243 1.39l-3.322-.338C7.38 4.96 7.738 3.96 8.43 3.26c.692-.698 1.7-1.048 3.024-1.048 1.67 0 2.802.515 3.397 1.546.3.523.452 1.332.452 2.428v4.968l.002.268c.01.37.04.658.087.866.048.208.125.364.232.468h-3.307a3.173 3.173 0 0 1-.227-.807 5.917 5.917 0 0 1-.047-.65c-.398.535-.827.924-1.287 1.17-.46.245-.97.367-1.53.367-.868 0-1.564-.278-2.086-.834-.523-.557-.784-1.264-.784-2.12zm3.816-.04c0 .437.097.782.29 1.035.193.253.45.38.773.38.34 0 .65-.152.928-.455.28-.303.42-.67.42-1.098V9.2l-.283.007c-.64.016-1.109.152-1.405.41-.297.258-.446.68-.446 1.265c0 .025-.002.053-.004.08l.004-.02z"/></svg>,
   },
   wynk: {
     name: "Wynk Music", color: "#E1175E",
-    authPath: null,
-    refreshPath: "/api/auth/wynk/session?action=refresh",
-    authParam: "wynk_auth",
-    authType: "otp", // phone + OTP flow
+    authPath:    null,
+    refreshPath: "/api/auth/credentials?platform=wynk&action=refresh",
+    authParam:   "wynk_auth",
+    authType:    "otp",
     note: "Airtel · India · OTP login",
     icon: <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>,
   },
   jiosaavn: {
     name: "JioSaavn", color: "#2BC5B4",
-    authPath: null,
-    refreshPath: "/api/auth/jiosaavn/session?action=refresh",
-    authParam: "jiosaavn_auth",
-    authType: "password", // username + password flow
+    authPath:    null,
+    refreshPath: "/api/auth/credentials?platform=jiosaavn&action=refresh",
+    authParam:   "jiosaavn_auth",
+    authType:    "password",
     note: "Jio · India · Email/phone login",
     icon: <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>,
   },
@@ -294,7 +294,7 @@ function CredModal({ platform, role, onSuccess, onClose }) {
   const requestOtp = async () => {
     setBusy(true); setErr(null);
     try {
-      const d = await api("/api/auth/wynk/session?action=request-otp", {
+      const d = await api("/api/auth/credentials?platform=wynk&action=request-otp", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ phone }),
       });
@@ -306,7 +306,7 @@ function CredModal({ platform, role, onSuccess, onClose }) {
   const verifyOtp = async () => {
     setBusy(true); setErr(null);
     try {
-      const d = await api("/api/auth/wynk/session?action=verify-otp", {
+      const d = await api("/api/auth/credentials?platform=wynk&action=verify-otp", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ phone, otp, txnId }),
       });
@@ -319,7 +319,7 @@ function CredModal({ platform, role, onSuccess, onClose }) {
   const loginSaavn = async () => {
     setBusy(true); setErr(null);
     try {
-      const d = await api("/api/auth/jiosaavn/session?action=login", {
+      const d = await api("/api/auth/credentials?platform=jiosaavn&action=login", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username: user, password: pass }),
       });

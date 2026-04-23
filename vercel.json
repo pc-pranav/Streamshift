@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "buildCommand": "vite build",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "functions": {
+    "api/auth.js":      { "maxDuration": 30 },
+    "api/playlists.js": { "maxDuration": 30 },
+    "api/tracks.js":    { "maxDuration": 30 },
+    "api/transfer.js":  { "maxDuration": 30 }
+  },
+  "rewrites": [
+    { "source": "/api/auth/:path*",  "destination": "/api/auth.js" },
+    { "source": "/api/playlists",    "destination": "/api/playlists.js" },
+    { "source": "/api/tracks",       "destination": "/api/tracks.js" },
+    { "source": "/api/transfer",     "destination": "/api/transfer.js" },
+    { "source": "/((?!api).*)",      "destination": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin",  "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET,POST,OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type,Authorization" }
+      ]
+    }
+  ]
+}

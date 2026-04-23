@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 const P = {
   spotify: {
     name: "Spotify", color: "#1DB954",
-    authPath:    "/api/auth?platform=spotify&action=login",
+    authPath:    "/api/auth?platform=spotify&action=login&role=source",
     refreshPath: "/api/auth?platform=spotify&action=refresh",
     authParam:   "spotify_auth",
     authType:    "oauth",

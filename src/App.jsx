@@ -59,12 +59,12 @@ const P = {
 
 const STEP_LABELS = ["Source", "Destination", "Playlists", "Preview", "Transfer"];
 
-// ─── AUTH STORE (sessionStorage, survives OAuth redirects) ───────────────────
+// ─── AUTH STORE (localStorage, persists across OAuth redirects + page reloads) ───────────────────
 const Auth = {
   _k: k => `ss_${k}`,
-  save(k, v)  { try { sessionStorage.setItem(Auth._k(k), JSON.stringify(v)); } catch {} },
-  load(k)     { try { const r = sessionStorage.getItem(Auth._k(k)); return r ? JSON.parse(r) : null; } catch { return null; } },
-  clear(k)    { try { sessionStorage.removeItem(Auth._k(k)); } catch {} },
+  save(k, v)  { try { localStorage.setItem(Auth._k(k), JSON.stringify(v)); } catch {} },
+  load(k)     { try { const r = localStorage.getItem(Auth._k(k)); return r ? JSON.parse(r) : null; } catch { return null; } },
+  clear(k)    { try { localStorage.removeItem(Auth._k(k)); } catch {} },
   clearAll()  { ["spotify","youtube_music","apple_music","amazon_music","wynk","jiosaavn","_src_snap"].forEach(k => Auth.clear(k)); },
 
   // Returns a valid access token, refreshing automatically if near expiry
@@ -389,7 +389,7 @@ function StepSource({ existingSrcAuth, onNext }) {
     }
     if (!plat.authPath) return;
     setBusy(true);
-    sessionStorage.setItem("ss_pending_role", "source");
+    localStorage.setItem("ss_pending_role", "source");
     window.location.href = `${plat.authPath}?role=source`;
   };
 
@@ -437,7 +437,7 @@ function StepDest({ srcPlatform, srcAuth, existingDstAuth, onNext }) {
     if (!plat.authPath) return;
     setBusy(true);
     Auth.save("_src_snap", srcAuth);
-    sessionStorage.setItem("ss_pending_role", "dest");
+    localStorage.setItem("ss_pending_role", "dest");
     window.location.href = `${plat.authPath}?role=dest`;
   };
 
@@ -1126,8 +1126,8 @@ export default function App() {
       if (!raw) continue;
       try {
         const data = JSON.parse(decodeURIComponent(raw));
-        const pendingRole = sessionStorage.getItem("ss_pending_role") || data.role || "source";
-        sessionStorage.removeItem("ss_pending_role");
+        const pendingRole = localStorage.getItem("ss_pending_role") || data.role || "source";
+        localStorage.removeItem("ss_pending_role");
 
         if (pendingRole === "source") {
           const authData = { ...data, role: "source", platform };

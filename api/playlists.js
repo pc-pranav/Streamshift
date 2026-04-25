@@ -79,8 +79,26 @@ async function spotifyPlaylists(res, token, offset, limit) {
     return resp;
   });
   const d = await r.json();
+  const items = (d.items||[]).filter(Boolean);
+
+  // Spotify returns null track count for followed/collaborative playlists.
+  // Fetch real count individually for those.
+  const playlists = await Promise.all(items.map(async (pl) => {
+    let trackCount = pl.tracks?.total ?? null;
+    if (trackCount === null || trackCount === 0) {
+      try {
+        const pr = await timedFetch(
+          `https://api.spotify.com/v1/playlists/${pl.id}?fields=tracks.total`,
+          { headers: { Authorization: `Bearer ${token}` } }, 6000
+        );
+        if (pr.ok) { const pd = await pr.json(); trackCount = pd.tracks?.total ?? 0; }
+      } catch { trackCount = 0; }
+    }
+    return { id:pl.id, name:pl.name||"Untitled", desc:pl.description||"", trackCount, isPublic:pl.public??false, isCollab:pl.collaborative??false, ownerId:pl.owner?.id, ownerName:pl.owner?.display_name||pl.owner?.id, coverUrl:pl.images?.[0]?.url||null, platform:"spotify", externalUrl:pl.external_urls?.spotify||null };
+  }));
+
   return res.status(200).json({
-    playlists: (d.items||[]).filter(Boolean).map(pl => ({ id:pl.id, name:pl.name||"Untitled", desc:pl.description||"", trackCount:pl.tracks?.total??0, isPublic:pl.public??false, isCollab:pl.collaborative??false, ownerId:pl.owner?.id, ownerName:pl.owner?.display_name||pl.owner?.id, coverUrl:pl.images?.[0]?.url||null, platform:"spotify", externalUrl:pl.external_urls?.spotify||null })),
+    playlists,
     pagination: { total:d.total, offset, limit:d.limit, hasMore:!!d.next },
   });
 }

@@ -12,7 +12,7 @@ const P = {
   },
   youtube_music: {
     name: "YouTube Music", color: "#FF0000",
-    authPath:    "/api/auth?platform=youtube_music&action=login",
+    authPath:    "/api/auth?platform=youtube_music&action=login&role=source",
     refreshPath: "/api/auth?platform=youtube_music&action=refresh",
     authParam:   "youtube_auth",
     authType:    "oauth",

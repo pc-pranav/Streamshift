@@ -62,7 +62,7 @@ function scoreMatch(src, cand) {
   return ts*0.40 + as*0.30 + ds*0.20 + albs*0.10;
 }
 
-function classify(score) { return score>=0.90?"matched":score>=0.65?"conflict":"unmatched"; }
+function classify(score) { return score>=0.82?"matched":score>=0.50?"conflict":"unmatched"; }
 
 const MAX_TRACKS = 5000;
 
@@ -168,7 +168,7 @@ async function fuzzySearch(track, platform, token) {
   const q=`${norm(track.title)} ${norm(track.artist||track.artists?.[0]||"")}`.trim();
   try {
     if (platform==="spotify") {
-      const r=await withRetry(()=>timedFetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(`track:${norm(track.title)} artist:${norm(track.artist||"")}`)}&type=track&limit=5&market=US`,{headers:{Authorization:`Bearer ${token}`}},8000));
+      const r=await withRetry(()=>timedFetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(`track:${norm(track.title)} artist:${norm(track.artist||"")}`)}&type=track&limit=5`,{headers:{Authorization:`Bearer ${token}`}},8000));
       if(!r.ok)return []; const d=await r.json(); return (d.tracks?.items||[]).map(toSpotify);
     }
     if (platform==="youtube_music") {
@@ -201,7 +201,7 @@ async function fuzzySearch(track, platform, token) {
 
 // ─── TRACK FETCHERS ───────────────────────────────────────────────────────────
 async function spotifyPlaylist(token, id) {
-  return paginateSpotify(`https://api.spotify.com/v1/playlists/${encodeURIComponent(id)}/tracks?limit=100&fields=items(added_at,track(id,name,artists,album,duration_ms,external_ids,is_local)),next,total`, token, item=>(!item?.track||item.track.is_local||!item.track.id)?null:toSpotifyFull(item.track,item.added_at));
+  return paginateSpotify(`https://api.spotify.com/v1/playlists/${encodeURIComponent(id)}/tracks?limit=100`, token, item=>(!item?.track||item.track.is_local||!item.track.id)?null:toSpotifyFull(item.track,item.added_at));
 }
 async function spotifyLiked(token) {
   return paginateSpotify(`https://api.spotify.com/v1/me/tracks?limit=50`, token, item=>item?.track?.id?toSpotifyFull(item.track,item.added_at):null);
